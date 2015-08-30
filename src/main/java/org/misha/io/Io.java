@@ -21,6 +21,7 @@ public class Io {
     private static final Logger log = Logger.getLogger(Io.class);
 
     public static void parseData(final List<Integer> callTimes, final File data) throws FileNotFoundException {
+        log.info("parsing data file");
         final Scanner sc = new Scanner(data);
         String line;
         int nextInt = 0;
@@ -32,7 +33,7 @@ public class Io {
                 try {
                     nextInt = Integer.parseInt(line);
                 } catch (final NumberFormatException e) {
-                    //log.error("line #" + i + " being " + line + " isn't an int");
+                    log.error("line #" + i + " being " + line + " isn't an int. Will be ignored.");
                 }
                 if (nextInt > 0 && nextInt != 7) {
                     callTimes.add(nextInt);

@@ -3,7 +3,6 @@ package org.misha.fitting;
 import org.apache.commons.math3.distribution.AbstractRealDistribution;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.Variance;
-import org.apache.log4j.Logger;
 import org.misha.io.Io;
 
 import java.io.File;
@@ -14,7 +13,6 @@ import java.util.*;
  * date: 8/21/15 10:16 PM.
  */
 public class Fitter implements Iterable<Long> {
-    private static final Logger log = Logger.getLogger(Fitter.class);
     private final File data;
     private final int range;
     private final List<Integer> callTimes = new ArrayList<Integer>();
@@ -59,7 +57,7 @@ public class Fitter implements Iterable<Long> {
         return empiricDistribution.size();
     }
 
-    public void makeEmpiricDistribution() throws Exception {
+    public void makeEmpiricDistribution() {
         int currentValue = callTimes.get(0);
         int counter = 0;
         Collection<Integer> points = new TreeSet<Integer>();
@@ -94,14 +92,14 @@ public class Fitter implements Iterable<Long> {
         private final T right;
 
         private Interval(final T left, final T right) {
-            if (left == null || right == null) {
-                throw new IllegalArgumentException("left=" + left + "; right=" + right);
-            }
             this.left = left;
             this.right = right;
         }
 
         public static <S extends Comparable<S>> Interval<S> interval(final S left, final S right) {
+            if (left == null || right == null) {
+                throw new IllegalArgumentException("left=" + left + "; right=" + right);
+            }
             if (left.compareTo(right) >= 0) {
                 throw new IllegalArgumentException("left must be less than or equal to right");
             }
@@ -138,7 +136,8 @@ public class Fitter implements Iterable<Long> {
         }
     }
 
-    public class Intervals implements Iterable<Interval<Integer>> {
+    //can not implement two different iterators inside single class
+    public final class Intervals implements Iterable<Interval<Integer>> {
         @Override
         public Iterator<Interval<Integer>> iterator() {
             return intervals.iterator();

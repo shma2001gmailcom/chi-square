@@ -17,8 +17,8 @@ public class Launcher {
 
     public static void main(final String... args) throws Exception {
         final File file = new File("resources/data/1-0.csv");
-        double max = 0d;
-        int index = 7;
+        double max = -1d;
+        int index = -1;
         for (int var = 13; var < 287; ++var) {
             final Fitter fitter = Fitter.fitter(file, var);
             final int size = fitter.size();
