@@ -46,7 +46,7 @@ public class Fitter implements Iterable<Long> {
         return new Mean().evaluate(observed);
     }
 
-    public void init() throws Exception {
+    private void init() throws Exception {
         Io.parseData(callTimes, data);
         makeEmpiricDistribution();
         Io.writeToCsv(empiricDistribution, range);
