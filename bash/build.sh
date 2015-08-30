@@ -6,8 +6,8 @@ M2=${M2_HOME}/bin
 export M2
 PATH=${PATH}:${M2}
 export PATH
-projectHome=../
-cd ${projectHome}
+
+cd ../
 mvn clean package
 cp -r src/main/resources/ target/
 
