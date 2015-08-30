@@ -5,8 +5,11 @@ import org.apache.commons.math3.stat.inference.ChiSquareTest;
 import org.apache.commons.math3.util.FastMath;
 import org.apache.log4j.Logger;
 import org.misha.fitting.Fitter;
+import org.misha.fitting.Fitter.Interval;
 
 import java.io.File;
+
+import static org.misha.fitting.Fitter.*;
 
 /**
  * author: misha
@@ -20,7 +23,7 @@ public class Launcher {
         double max = -1d;
         int index = -1;
         for (int var = 13; var < 287; ++var) {
-            final Fitter fitter = Fitter.fitter(file, var);
+            final Fitter fitter = fitter(file, var);
             final int size = fitter.size();
             final double[] logExpected = new double[size];
             final double[] logObserved = new double[size];
@@ -31,11 +34,11 @@ public class Launcher {
                 logObservedLong[i] = (long) logObserved[i];
                 ++i;
             }
-            final double lm = Fitter.doubleMean(logObserved);
-            final double logVar = Fitter.doubleVar(logObserved);
+            final double lm = doubleMean(logObserved);
+            final double logVar = doubleVar(logObserved);
             i = 0;
-            for (final Fitter.Interval<Integer> interval : fitter.intervals()) {
-                Fitter.defineExpected(logExpected, i, new LogNormalDistribution(lm, logVar), interval);
+            for (final Interval<Integer> interval : fitter.intervals()) {
+                defineExpected(logExpected, i, new LogNormalDistribution(lm, logVar), interval);
                 ++i;
             }
             final double result = new ChiSquareTest().chiSquareTest(logExpected, logObservedLong);
